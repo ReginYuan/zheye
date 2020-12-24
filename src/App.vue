@@ -1,13 +1,25 @@
 /* eslint-disable quotes */ /* eslint-disable semi */
 <template>
-  <column-list :list="list"></column-list>
+  <div id="container" class="container">
+    <global-header :user="currentUser"></global-header>
+    <column-list :list="list"></column-list>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import ColumnList, { ColumnProps } from '@/components/ColumnList.vue'
+import GlobalHeader, { UserProps } from '@/components/GlobalHeader.vue'
 
+// 用户信息
+const currentUser: UserProps = {
+  isLogin: true,
+  name: 'ReginYuan',
+  id: 0
+
+}
+// 专栏简介
 const testData: ColumnProps[] = [
   {
     id: 1,
@@ -44,24 +56,22 @@ const testData: ColumnProps[] = [
 export default defineComponent({
   name: 'App',
   components: {
-    ColumnList
+    ColumnList,
+    GlobalHeader
   },
   // eslint-disable-next-line space-before-function-paren
-  setup() {
+  setup () {
     return {
-      list: testData
+      list: testData,
+      currentUser
     }
   }
 })
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.container {
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  float: none;
 }
 </style>
