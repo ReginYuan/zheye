@@ -12,8 +12,8 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
-
+import { defineComponent, ref, watch } from 'vue'
+import useClickOutside from '@/hooks/useClickOutside.ts'
 export default defineComponent({
   name: 'Dropdown',
   props: {
@@ -29,22 +29,13 @@ export default defineComponent({
     const toggleOpen = () => {
       isOpen.value = !isOpen.value
     }
-    // 控制弹窗
-    const handler = (e: MouseEvent) => {
-      if (dropdownRef.value) {
-        // 如果获取的节点是存在的并且isOpen是true,则设置isOpen为false关闭弹窗
-        if (!dropdownRef.value.contains(e.target as HTMLElement) && isOpen.value) {
-          isOpen.value = false
-        }
+    // 像向窗组件传入dom节点的值,并获取弹窗组件传来的值
+    const isClickOutside = useClickOutside(dropdownRef)
+    // 监听并控制弹窗 不监听是无法执行这段代码的
+    watch(isClickOutside, () => {
+      if (isOpen.value && isClickOutside.value) {
+        isOpen.value = false
       }
-    }
-    // 挂载并渲染事件
-    onMounted(() => {
-      document.addEventListener('click', handler)
-    })
-    // 卸载载并移除事件
-    onUnmounted(() => {
-      document.removeEventListener('click', handler)
     })
     return {
       isOpen,
