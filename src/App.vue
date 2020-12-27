@@ -2,16 +2,32 @@
 <template>
   <div id="container" class="container">
     <global-header :user="currentUser"></global-header>
-    <column-list :list="list"></column-list>
+    <form class="form-biaodan" action>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">邮箱地址:</label>
+        <input
+          type="email"
+          class="form-control"
+          v-model="emailRef.val"
+          @blur="validateEmail"
+          id="exampleInputEmail1"
+        />
+        <div class="form-text" v-if="emailRef.error">{{emailRef.message}}</div>
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">密码:</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" />
+      </div>
+      <button type="submit" class="btn btn-primary">登录</button>
+    </form>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import ColumnList, { ColumnProps } from '@/components/ColumnList.vue'
 import GlobalHeader, { UserProps } from '@/components/GlobalHeader.vue'
-
 // 用户信息
 const currentUser: UserProps = {
   isLogin: true,
@@ -56,14 +72,36 @@ const testData: ColumnProps[] = [
 export default defineComponent({
   name: 'App',
   components: {
-    ColumnList,
     GlobalHeader
+    //  ColumnList
+    // ValidateInput
   },
   // eslint-disable-next-line space-before-function-paren
   setup () {
+    const emailRef = reactive({
+      val: '',
+      error: false,
+      message: ''
+    })
+    // 判断emaild的正则表达式
+    const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    // email验证的方法
+    const validateEmail = () => {
+      // 判断email内容是否为空
+      if (emailRef.val.trim() === '') {
+        emailRef.error = true
+        emailRef.message = '内容不能为空'
+        // 验证email是否可用
+      } else if (!emailReg.test(emailRef.val)) {
+        emailRef.error = true
+        emailRef.message = '邮箱格式错误'
+      }
+    }
     return {
       list: testData,
-      currentUser
+      currentUser,
+      emailRef,
+      validateEmail
     }
   }
 })
@@ -73,5 +111,8 @@ export default defineComponent({
 .container {
   text-align: center;
   float: none;
+}
+.container .form-biaodan .form-label {
+  float: left;
 }
 </style>

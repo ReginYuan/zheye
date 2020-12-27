@@ -45,7 +45,7 @@ export default defineComponent({
   }
 
 })
-</script>>
+</script>
 <style lang="sass" scoped>
 
 </style>
