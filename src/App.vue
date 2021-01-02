@@ -5,7 +5,8 @@
     <form class="form-biaodan" >
       <div class="mb-3">
         <label class="form-label">邮箱地址:</label>
-        <validate-input :rules="emailRules"></validate-input>
+        <validate-input :rules="emailRules" v-model="emailVal"></validate-input>
+    {{emailVal}}
       </div>
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">邮箱地址:</label>
@@ -28,11 +29,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import ColumnList, { ColumnProps } from '@/components/ColumnList.vue'
 import GlobalHeader, { UserProps } from '@/components/GlobalHeader.vue'
 import ValidateInput, { RulesProp } from '@/components/ValidateInput.vue'
+
+// 创建一个emailinput内容初始值
+const emailVal = ref('ReginYuan')
+
 // 用户信息
 const currentUser: UserProps = {
   isLogin: true,
@@ -111,7 +116,8 @@ export default defineComponent({
       currentUser,
       emailRef,
       validateEmail,
-      emailRules
+      emailRules,
+      emailVal
     }
   }
 })
