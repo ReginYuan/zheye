@@ -1,12 +1,63 @@
 <template>
-  <h1></h1>
+  <div class="validate-input-container pb-3">
+    <input type="text" class="form-control" v-model="inputRef.val" @blur="validateInput" />
+  </div>
 </template>
 
 
 <script lang='ts'>
-import { defineComponent } from 'vue'
-export default defineComponent({
-  name: 'ValidateInput'
+import { defineComponent, reactive, PropType } from 'vue'
 
+// 判断emaild的正则表达式
+const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+// 定义类型接口
+interface RuleProp {
+  type: 'required' | 'email';
+  message: string;
+}
+// 生成实例
+export type RulesProp = RuleProp[]
+
+export default defineComponent({
+  name: 'ValidateInput',
+  props: {
+    rules: Array as PropType<RulesProp>
+  },
+  setup (props) {
+    // 定义响应式数据
+    const inputRef = reactive({
+      val: '',
+      error: false,
+      message: ''
+
+    })
+    // 触发事件
+    const validateInput = () => {
+      if (props.rules) {
+        const allPassed = props.rules.every(rule => {
+          let passed = true
+          inputRef.message = rule.message
+          switch (rule.type) {
+            case 'required':
+              passed = (inputRef.val.trim() !== '')
+              break
+            case 'email':
+              passed = emailReg.test(inputRef.val)
+              break
+            default:
+              break
+          }
+          return passed
+        })
+        // 获取错误信息
+        inputRef.error = !allPassed
+      }
+    }
+    return {
+      inputRef,
+      validateInput,
+      emailReg
+    }
+  }
 })
 </script>>

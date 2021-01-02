@@ -2,7 +2,8 @@ import { ref, onMounted, onUnmounted, Ref } from 'vue'
 // 通用弹窗组件
 // 自定义弹窗函数   获取页面传来dom的节点参数
 const useClickOutside = (elementRef: Ref <null | HTMLElement>) => {
-const isClickOutside = ref(false)
+// 定义点击
+  const isClickOutside = ref(false)
  const handler = (e: MouseEvent) => {
 // 如果dom节点存在 则执行以下代码
 if (elementRef.value) {
