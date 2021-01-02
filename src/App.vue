@@ -82,6 +82,7 @@ export default defineComponent({
   },
   // eslint-disable-next-line space-before-function-paren
   setup () {
+    // 定义验证提示
     const emailRules: RulesProp = [
       { type: 'required', message: '电子邮箱地址不能为空' },
       { type: 'email', message: '请输入正确格式的电子邮箱格式' }

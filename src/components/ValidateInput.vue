@@ -1,6 +1,11 @@
 <template>
   <div class="validate-input-container pb-3">
-    <input type="text" class="form-control" v-model="inputRef.val" @blur="validateInput" />
+    <input type="text"
+    class="form-control"
+    :class="{'is-invalid':inputRef.error}"
+     v-model="inputRef.val"
+      @blur="validateInput" />
+      <span v-if="inputRef.error" class="invalid-feedback">{{inputRef.message}}</span>
   </div>
 </template>
 
@@ -10,7 +15,7 @@ import { defineComponent, reactive, PropType } from 'vue'
 
 // 判断emaild的正则表达式
 const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-// 定义类型接口
+// 定义规则类型接口
 interface RuleProp {
   type: 'required' | 'email';
   message: string;
